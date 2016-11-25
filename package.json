@@ -1,0 +1,34 @@
+{
+  "name": "koa-contract",
+  "version": "0.9.0",
+  "description": "an interface definition lib for koa",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/mocha/bin/_mocha -- test/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/netssfy/koa-contract.git"
+  },
+  "keywords": [
+    "koa",
+    "restful",
+    "interface"
+  ],
+  "author": "netssfy",
+  "license": "MIT",
+  "dependencies": {
+    "co": "^4.6.0",
+    "koa-router": "^5.4.0",
+    "lodash": "^4.17.2"
+  },
+  "bugs": {
+    "url": "https://github.com/netssfy/koa-contract/issues"
+  },
+  "homepage": "https://github.com/netssfy/koa-contract#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "co-mocha": "^1.1.3",
+    "mocha": "^3.2.0"
+  }
+}
