@@ -6,7 +6,7 @@ const should = require('chai').should();
 const _ = require('lodash');
 const co = require('co');
 
-describe('Contract Unit Test', function() {
+describe('Contract define Unit Test', function() {
   describe('param type check test', function() {
     let contractOpt = {
       name: 'test',
