@@ -21,6 +21,7 @@ describe('Contract runtime Unit Test', function() {
         msg += `\n\t\tparam = ${JSON.stringify(value)}`;
       }
       console.log(`\trunning with ${msg}`);
+      return msg;
     }
   };
 
@@ -428,6 +429,86 @@ describe('KoaBridge runtime Unit Test', function() {
     .expect(200)
     .expect({
       result: 'value \"hahah\" can\'t be converted to type define Boolean'
+    })
+    .end();
+  });
+
+  it('result check expect boolean but string', function* () {
+    let contract = ContractFactory({
+      name: 'test',
+      url:'/test',
+      method: 'get',
+      result: Boolean,
+      processor: function *() {
+        return 'str value';
+      }
+    });
+
+    yield request(contract)
+    .get('/test')//mock koa-qs's parser
+    .expect(200)
+    .expect({
+      result: 'value \"str value\" is not conform to type define Boolean'
+    })
+    .end();
+  });
+
+  it('result check missing field', function* () {
+    let contract = ContractFactory({
+      name: 'test',
+      url:'/test',
+      method: 'get',
+      result: { a: String, b: Number },
+      processor: function *() {
+        return { a: 'a' };
+      }
+    });
+
+    yield request(contract)
+    .get('/test')//mock koa-qs's parser
+    .expect(200)
+    .expect({
+      result: 'object field b: value undefined is not conform to type define Number'
+    })
+    .end();
+  });
+
+  it('result check field type not match', function* () {
+    let contract = ContractFactory({
+      name: 'test',
+      url:'/test',
+      method: 'get',
+      result: { a: String, b: Number },
+      processor: function *() {
+        return { a: 'a', b: 'wrong type' };
+      }
+    });
+
+    yield request(contract)
+    .get('/test')//mock koa-qs's parser
+    .expect(200)
+    .expect({
+      result: 'object field b: value \"wrong type\" is not conform to type define Number'
+    })
+    .end();
+  });
+
+  it('result check field not require', function* () {
+    let contract = ContractFactory({
+      name: 'test',
+      url:'/test',
+      method: 'get',
+      result: { a: { TYPE:String, require: false }, b: { TYPE:Number, require: false } },
+      processor: function *() {
+        return {};
+      }
+    });
+
+    yield request(contract)
+    .get('/test')//mock koa-qs's parser
+    .expect(200)
+    .expect({
+      result: {}
     })
     .end();
   });
