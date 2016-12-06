@@ -448,7 +448,7 @@ describe('KoaBridge runtime Unit Test', function() {
     .get('/test')//mock koa-qs's parser
     .expect(200)
     .expect({
-      result: 'value \"str value\" is not conform to type define Boolean'
+      result: 'check result failed: value \"str value\" is not conform to type define Boolean'
     })
     .end();
   });
@@ -468,7 +468,7 @@ describe('KoaBridge runtime Unit Test', function() {
     .get('/test')//mock koa-qs's parser
     .expect(200)
     .expect({
-      result: 'object field b: value undefined is not conform to type define Number'
+      result: 'check result failed: object field b: value undefined is not conform to type define Number'
     })
     .end();
   });
@@ -488,7 +488,7 @@ describe('KoaBridge runtime Unit Test', function() {
     .get('/test')//mock koa-qs's parser
     .expect(200)
     .expect({
-      result: 'object field b: value \"wrong type\" is not conform to type define Number'
+      result: 'check result failed: object field b: value \"wrong type\" is not conform to type define Number'
     })
     .end();
   });
@@ -509,6 +509,46 @@ describe('KoaBridge runtime Unit Test', function() {
     .expect(200)
     .expect({
       result: {}
+    })
+    .end();
+  });
+
+  it('result check field null', function* () {
+    let contract = ContractFactory({
+      name: 'test',
+      url:'/test',
+      method: 'get',
+      result: { a: String },
+      processor: function *() {
+        return { a: null };
+      }
+    });
+
+    yield request(contract)
+    .get('/test')//mock koa-qs's parser
+    .expect(200)
+    .expect({
+      result: 'check result failed: object field a: value null is not conform to type define String'
+    })
+    .end();
+  });
+
+  it('result check field null but not required', function* () {
+    let contract = ContractFactory({
+      name: 'test',
+      url:'/test',
+      method: 'get',
+      result: { a: { TYPE:String, require: false } },
+      processor: function *() {
+        return { a: null };
+      }
+    });
+
+    yield request(contract)
+    .get('/test')//mock koa-qs's parser
+    .expect(200)
+    .expect({
+      result: { a: null }
     })
     .end();
   });
