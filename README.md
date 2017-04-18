@@ -19,7 +19,8 @@ var contract = Contract({
   params: {
     type: { TYPE: String, from: 'query', description: 'type' },
     page: { TYPE: Number, from: 'query', require: false, description: 'which page' },
-    pageSize: { TYPE: Number, from: 'query', require: false, description: 'size of page ' }
+    pageSize: { TYPE: Number, from: 'query', require: false, description: 'size of page ' },
+    platform: { TYPE: String, from: 'body', in: ['ios', 'android'] }
   },
   result: { TYPE: [{name: String}], description: 'result is a list of object, each contains name fields' },
   processor: getList
