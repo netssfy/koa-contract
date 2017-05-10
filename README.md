@@ -11,6 +11,7 @@ When request comes, framework will check the actual parameters against defined p
 
 # sample contract definition
 ```javascript
+var Contract = require('node-contract').Contract
 var contract = Contract({
   name: 'test api',
   url: '/test/api',
@@ -38,3 +39,19 @@ the above code give a clear definition of web api. Also it restricts the params 
 type is a required String param and comes from querystring
 page is a optional Number param and also comes from querystring
 pageSize is a optional Number param and also comes from querystring
+
+# integrate with KOA
+use built-in bridge to connect KOA and Contract
+```javascript
+var KoaBridge = require('node-contract').KoaBridge
+//choose which contracts to use
+var bridge = KoaBridge({ contracts: contracts });
+//or KoaBridage('folder path'); //load all contracts from js file under the path
+
+//mount function convert all loaded contract to koa router
+koaApp.use(bridge.mount());//load all loaded contracts
+//or koaApp.use(bridge.mount([{ name:'C1'}, { name: 'C2'}])); //load partial contracts by name
+```
+
+# integrate with KOA2 or express
+on the way...
